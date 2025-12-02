@@ -8,10 +8,8 @@ def is_invalid_p1(s):
     return s[:len(s) // 2] == s[len(s) // 2:]
 
 def is_invalid_p2(s):
-    for k in range(1, len(s) // 2 + 1):
-      if len(s) % k == 0:
-          t = s[:k]
-          if t * (len(s) // k) == s: return True
+    for group_len in range(1, len(s) // 2 + 1):
+        if s[:group_len] * (len(s) // group_len) == s: return True
     return False
 
 for start, end in ranges:
