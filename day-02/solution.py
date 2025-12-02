@@ -5,12 +5,13 @@ with open(0, "r") as f:
     ranges = [(int(x), int(y)) for x, y in [r.split("-") for r in f.readline().strip().split(",")]]
 
 def is_invalid_p1(s):
-    return s[: len(s) // 2] == s[len(s) // 2 :]
+    return s[:len(s) // 2] == s[len(s) // 2:]
 
 def is_invalid_p2(s):
-    for group_len in range(len(s) // 2):
-        groups = [s[i : i + group_len + 1] for i in range(0, len(s), group_len + 1)]
-        if all(g == groups[0] for g in groups): return True
+    for k in range(1, len(s) // 2 + 1):
+      if len(s) % k == 0:
+          t = s[:k]
+          if t * (len(s) // k) == s: return True
     return False
 
 for start, end in ranges:
