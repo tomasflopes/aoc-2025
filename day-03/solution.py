@@ -17,6 +17,5 @@ def k_largest(line, k):
 
     return sum(d * (10 ** (len(res) - i - 1)) for i, d in enumerate(res))
 
-for i, k in enumerate([2, 12]):
-    res = sum(k_largest(line, k) for line in data)
-    print(f"Part {i + 1}:", res)
+print("Part 1:", sum(k_largest(line, 2) for line in data))
+print("Part 2:", sum(k_largest(line, 12) for line in data))
