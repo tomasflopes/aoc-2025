@@ -8,7 +8,7 @@ def k_largest(line, k):
     start = 0
 
     for j in range(k):
-        end = len(line) - (k - j) + 1
+        end = len(line) - k + j + 1
         best_val = max(line[start:end])
         best_idx = start + line[start:end].index(best_val)
 
