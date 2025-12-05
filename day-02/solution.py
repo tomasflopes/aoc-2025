@@ -1,4 +1,3 @@
-ranges = []
 p1 = p2 = 0
 
 with open(0, "r") as f:

@@ -1,5 +1,3 @@
-data = []
-
 with open(0, "r") as f:
     data = [list(map(int, x.strip())) for x in f.readlines()]
 
