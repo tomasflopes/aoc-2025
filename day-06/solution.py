@@ -1,3 +1,4 @@
+from math import prod
 p1 = p2 = 0
 
 with open(0, "r") as f:
@@ -5,33 +6,29 @@ with open(0, "r") as f:
     data = [list(map(int, line.strip().split())) for line in lines[:-1]]
     ops = [x for x in lines[-1].strip().split() if x != ""]
 
-ops_p2 = []
 for col in range(len(data[0])):
     r = 0
     col_vals = [data[row][col] for row in range(len(data))]
     max_len = max(len(str(v)) for v in col_vals)
-    ops_p2.extend([ops[col]] * (max_len+1))
     op = ops[col]
     if op == "*":
-        r = 1
-        for v in col_vals:
-            r *= v
+        r = prod(col_vals)
     elif op == "+":
         r = sum(col_vals)
     p1 += r
 
 nums = []
+i = 0
 for col in range(len(lines[0])):
     r = 0
     col_vals = [lines[row][col] for row in range(len(lines[:-1]))]
     if all(v == " " or v == "\n" for v in col_vals):
-      if ops_p2[col] == "*":
-        r = 1
-        for v in nums:
-            r *= v
-      elif ops_p2[col] == "+":
+      if ops[i] == "*":
+        r = prod(nums)
+      elif ops[i] == "+":
         r = sum(nums)
       nums = []
+      i += 1
       p2 += r
       continue
 
