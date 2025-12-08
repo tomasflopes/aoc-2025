@@ -5,8 +5,8 @@ with open(0, "r") as f:
 
 dists = {}
 for i, (x, y, z) in enumerate(data):
-  for xx, yy, zz in data[i+1:]:
-    dists[(x, y, z, xx, yy, zz)] = (int(x)-int(xx))**2 + (int(y)-int(yy))**2 + (int(z)-int(zz))**2
+    for xx, yy, zz in data[i+1:]:
+        dists[(x, y, z, xx, yy, zz)] = (int(x)-int(xx))**2 + (int(y)-int(yy))**2 + (int(z)-int(zz))**2
 
 dists = dict(sorted(dists.items(), key=lambda item: item[1]))
 circuits = []
@@ -22,9 +22,9 @@ for i, ((x, y, z, xx, yy, zz), _) in enumerate(list(dists.items())):
     elif first_circuit != second_circuit:
         first_circuit.update(second_circuit)
         circuits.remove(second_circuit)
-    if i == 1000:
-      circuits = sorted(circuits, key=lambda c: len(c), reverse=True)
-      print("Part 1:", prod([len(c) for c in circuits[:3]]))
+    if i == 1000 or (len(dists.items()) < 1000 and i == 9):
+        circuits = sorted(circuits, key=lambda c: len(c), reverse=True)
+        print("Part 1:", prod([len(c) for c in circuits[:3]]))
     if len(circuits) == 1 and len(circuits[0]) == len(data):
         print("Part 2:", int(x) * int(xx))
         break
