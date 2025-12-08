@@ -1,4 +1,4 @@
-from math import sqrt, prod
+from math import prod
 
 with open(0, "r") as f:
     data = [line.strip().split(",") for line in f.readlines()]
