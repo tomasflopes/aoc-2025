@@ -35,6 +35,30 @@ for (x, y, z, xx, yy, zz), dist in list(dists.items())[:1000]:
         first_circuit.update(second_circuit)
         circuits.remove(second_circuit)
 
+circuits = []
+for i, ((x, y, z, xx, yy, zz), dist) in enumerate(list(dists.items())):
+    first_circuit = None
+    second_circuit = None
+    for circuit in circuits:
+        if (x, y, z) in circuit:
+            first_circuit = circuit
+        if (xx, yy, zz) in circuit:
+            second_circuit = circuit
+    if first_circuit and not second_circuit:
+        first_circuit.add((xx, yy, zz))
+    elif not first_circuit and second_circuit:
+        second_circuit.add((x, y, z))
+    elif not first_circuit and not second_circuit:
+        circuits.append(set([(x, y, z), (xx, yy, zz)]))
+    elif first_circuit != second_circuit:
+        first_circuit.update(second_circuit)
+        circuits.remove(second_circuit)
+
+    if len(circuits) == 1 and len(circuits[0]) == len(data):
+        print(x, xx, i)
+        p2 = int(x) * int(xx)
+        break
+
 circuits = sorted(circuits, key=lambda c: len(c), reverse=True)
 print("Part 1:", math.prod([len(c) for c in circuits[:3]]))
 print("Part 2:", p2)
