@@ -40,19 +40,16 @@ def part2():
     presses = Int('presses')
     button_vars = [Int(f"button{i}") for i in range(len(steps))]
 
-    counters_button_lookup = defaultdict(list)
+    button_counter = defaultdict(list)
     for i, button in enumerate(steps):
         for index in button:
-            counters_button_lookup[index].append(i)
+            button_counter[index].append(i)
 
     equations = []
-
-    for counter, counter_buttons in counters_button_lookup.items():
+    for counter, counter_buttons in button_counter.items():
         equations.append(joltage[counter] == sum([button_vars[i] for i in counter_buttons]))
-
     for button_var in button_vars:
         equations.append(button_var >= 0)
-
     equations.append(presses == sum(button_vars))
 
     opt = Optimize()
@@ -61,8 +58,7 @@ def part2():
     opt.check()
 
     output = opt.model()[presses]
-
-    res += int(str(output)) 
+    res += int(str(output))
   return res
   
 print("Part 1:", part1())
