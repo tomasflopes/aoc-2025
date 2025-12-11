@@ -1,7 +1,7 @@
 from collections import defaultdict
 import re
 from itertools import combinations
-from z3 import Optimize, Int, Sum, sat
+from z3 import Optimize, Int
 
 p2 = 0
 with open(0, "r") as f:
