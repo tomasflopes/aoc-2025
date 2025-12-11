@@ -1,11 +1,10 @@
-from collections import defaultdict
-from functools import lru_cache
+from functools import cache
 
 with open(0, "r") as f:
     data = {r[0]: r[1:] for r in [line.strip().replace(":", "").split() for line in f.readlines()]}
     data["out"] = []
 
-@lru_cache()
+@cache
 def count_paths(start, end):
     if start == end: return 1
     return sum(count_paths(nxt, end) for nxt in data[start])
