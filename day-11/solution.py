@@ -1,48 +1,17 @@
+from collections import defaultdict
 from functools import lru_cache
-p1 = 0
-p2 = []
 
 with open(0, "r") as f:
-    data = [line.strip().replace(":", "").split() for line in f.readlines()]
-m = {r[0]: r[1:] for r in data}
-m["out"] = []
+    data = {r[0]: r[1:] for r in [line.strip().replace(":", "").split() for line in f.readlines()]}
+    data["out"] = []
 
-def dfs(node, out, visited=set()): 
-  global p1 
-  if node == out: 
-    p1 += 1 
-    return
-  for neighbor in m[node]: 
-    if neighbor not in visited: 
-      dfs(neighbor, out, visited | {neighbor})
-
-# dfs("you", "out")
-# print("Part 1:", p1)
-
-@lru_cache(None)
+@lru_cache()
 def count_paths(start, end):
-    if start == end:
-        return 1
-    total = 0
-    for nxt in m[start]:
-        total += count_paths(nxt, end)
-    return total
+    if start == end: return 1
+    return sum(count_paths(nxt, end) for nxt in data[start])
 
-# Required intermediate nodes
-a, b = "dac", "fft"
+dac_fft = count_paths("svr", "dac") * count_paths("dac", "fft") * count_paths("fft", "out")
+fft_dac = count_paths("svr", "fft") * count_paths("fft", "dac") * count_paths("dac", "out")
 
-# Case 1: svr -> dac -> fft -> out
-case1 = (
-    count_paths("svr", a) *
-    count_paths(a, b) *
-    count_paths(b, "out")
-)
-
-# Case 2: svr -> fft -> dac -> out
-case2 = (
-    count_paths("svr", b) *
-    count_paths(b, a) *
-    count_paths(a, "out")
-)
-
-print("Total valid paths:", case1 + case2)
+print("Part 1:", count_paths("you", "out"))
+print("Part 2:", dac_fft + fft_dac)
