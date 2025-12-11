@@ -1,9 +1,8 @@
-from collections import defaultdict
 import re
+from collections import defaultdict
 from itertools import combinations
 from z3 import Optimize, Int
 
-p2 = 0
 with open(0, "r") as f:
     data = [re.findall(r'\[([.#]+)\]\s*((?:\([\d,]+\)\s*)+)\{([\d,]+)\}', line.strip())[0] for line in f.readlines()]
 
@@ -13,22 +12,16 @@ def part1():
     steps = [list(map(int, x.split(','))) for x in re.findall(r'\(([\d,]+)\)', steps)]
     res = 0
     for n in range(1, len(steps)):
-      found = False
       for s in combinations(steps, n):
-        curr = "."*len(goal)
+        curr = ["."]*len(goal)
         for combo in s:
           for i in combo:
-              if curr[i] == '#':
-                curr = curr[:i] + '.' + curr[i+1:]
-              else:
-                curr = curr[:i] + '#' + curr[i+1:]
-        if goal == curr:
-            found = True
+              curr[i] = '#' if curr[i] == '.' else '.'
+        if goal == "".join(curr):
             res = max(res, n)
             break
-      if found:
+      if res != 0:
           break
-
     r += res
   return r
 
@@ -45,20 +38,16 @@ def part2():
         for index in button:
             button_counter[index].append(i)
 
-    equations = []
-    for counter, counter_buttons in button_counter.items():
-        equations.append(joltage[counter] == sum([button_vars[i] for i in counter_buttons]))
-    for button_var in button_vars:
-        equations.append(button_var >= 0)
+    equations = [joltage[idx] == sum(button_vars[b] for b in btns) for idx, btns in button_counter.items()]
+    equations += [var >= 0 for var in button_vars]
     equations.append(presses == sum(button_vars))
 
     opt = Optimize()
     opt.add(equations)
     opt.minimize(presses)
     opt.check()
+    res += int(str(opt.model()[presses]))
 
-    output = opt.model()[presses]
-    res += int(str(output))
   return res
   
 print("Part 1:", part1())
